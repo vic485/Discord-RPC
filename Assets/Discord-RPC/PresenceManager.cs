@@ -30,6 +30,8 @@ namespace DiscordPresence
 
         DiscordRpc.EventHandlers handlers;
 
+        public static PresenceManager instance;
+
         public void OnClick()
         {
             Debug.Log("Discord: on click!");
@@ -54,6 +56,7 @@ namespace DiscordPresence
             hasResponded.Invoke();
         }
 
+        #region Discord Callbacks
         public void ReadyCallback()
         {
             ++callbackCalls;
@@ -95,9 +98,13 @@ namespace DiscordPresence
             joinRequest = request;
             onJoinRequest.Invoke(request);
         }
+        #endregion
 
-        void Start()
+        #region Monobehaviour Callbacks
+        // Singleton
+        void Awake()
         {
+            instance = this;
         }
 
         void Update()
@@ -130,5 +137,38 @@ namespace DiscordPresence
         {
 
         }
+        #endregion
+
+        #region Update Presence Method
+        public static void UpdatePresence(string detail, string state = null, long start = -1, long end = -1, string largeKey = null,
+            string largeText = null, string smallKey = null, string smallText = null, string partyId = null, int size = -1,
+            int max = -1, string match = null, string join = null, string spectate = null/*, bool instance = false*/)
+        {
+            instance.Change(detail, state, start, end, largeKey, largeText, smallKey, smallText, partyId, size, max, match,
+                join, spectate);
+        }
+
+        public void Change(string detail, string state, long start, long end, string largeKey,string largeText, 
+            string smallKey, string smallText, string partyId, int size,int max, string match, string join, 
+            string spectate/*, bool instance*/)
+        {
+            presence.details = detail ?? presence.details;
+            presence.state = state ?? presence.state;
+            presence.startTimestamp = (start == -1) ? presence.startTimestamp : start;
+            presence.endTimestamp = (end == -1) ? presence.endTimestamp : end;
+            presence.largeImageKey = largeKey ?? presence.largeImageKey;
+            presence.largeImageText = largeText ?? presence.largeImageText;
+            presence.smallImageKey = smallKey ?? presence.smallImageKey;
+            presence.smallImageText = smallText ?? presence.smallImageText;
+            presence.partyId = partyId ?? presence.partyId;
+            presence.partySize = (size == -1) ? presence.partySize : size;
+            presence.partyMax = (max == -1) ? presence.partyMax : max;
+            presence.matchSecret = match ?? presence.matchSecret;
+            presence.joinSecret = join ?? presence.joinSecret;
+            presence.spectateSecret = spectate ?? presence.spectateSecret;
+            //presence.instance =
+            DiscordRpc.UpdatePresence(presence);
+        }
+        #endregion
     }
 }
