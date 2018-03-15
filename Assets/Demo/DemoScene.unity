@@ -483,7 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f45a470316b41fe4ab4209587f3a07b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  notes: 
+  notes: "TODO:\n - Singleton\n - Update presence calls\n - Quit application hook"
 --- !u!4 &784857401
 Transform:
   m_ObjectHideFlags: 0
@@ -680,11 +680,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   presence:
-    state: 
+    state: <- owo what's this?
     details: 
     startTimestamp: 0
     endTimestamp: 0
-    largeImageKey: 
+    largeImageKey: stable-large
     largeImageText: 
     smallImageKey: 
     smallImageText: 
