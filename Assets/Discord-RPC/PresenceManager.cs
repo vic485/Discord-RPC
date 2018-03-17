@@ -104,7 +104,15 @@ namespace DiscordPresence
         // Singleton
         void Awake()
         {
-            instance = this;
+            if (instance == null)
+            {
+                instance = this;
+            }
+            else if (instance != this)
+            {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
         }
 
         void Update()
@@ -140,34 +148,51 @@ namespace DiscordPresence
         #endregion
 
         #region Update Presence Method
-        public static void UpdatePresence(string detail, string state = null, long start = -1, long end = -1, string largeKey = null,
-            string largeText = null, string smallKey = null, string smallText = null, string partyId = null, int size = -1,
-            int max = -1, string match = null, string join = null, string spectate = null/*, bool instance = false*/)
+        public static void UpdatePresence(string detail, string state = null, long start = -1, long end = -1, string largeKey = null,string largeText = null, 
+            string smallKey = null, string smallText = null, string partyId = null, int size = -1, int max = -1, string match = null, string join = null, 
+            string spectate = null/*, bool instance*/)
         {
-            instance.Change(detail, state, start, end, largeKey, largeText, smallKey, smallText, partyId, size, max, match,
-                join, spectate);
+            instance.presence.details = detail ?? instance.presence.details;
+            instance.presence.state = state ?? instance.presence.state;
+            instance.presence.startTimestamp = (start == -1) ? instance.presence.startTimestamp : start;
+            instance.presence.endTimestamp = (end == -1) ? instance.presence.endTimestamp : end;
+            instance.presence.largeImageKey = largeKey ?? instance.presence.largeImageKey;
+            instance.presence.largeImageText = largeText ?? instance.presence.largeImageText;
+            instance.presence.smallImageKey = smallKey ?? instance.presence.smallImageKey;
+            instance.presence.smallImageText = smallText ?? instance.presence.smallImageText;
+            instance.presence.partyId = partyId ?? instance.presence.partyId;
+            instance.presence.partySize = (size == -1) ? instance.presence.partySize : size;
+            instance.presence.partyMax = (max == -1) ? instance.presence.partyMax : max;
+            instance.presence.matchSecret = match ?? instance.presence.matchSecret;
+            instance.presence.joinSecret = join ?? instance.presence.joinSecret;
+            instance.presence.spectateSecret = spectate ?? instance.presence.spectateSecret;
+            //instance.presence.presence.instance =
+            DiscordRpc.UpdatePresence(instance.presence);
         }
 
-        public void Change(string detail, string state, long start, long end, string largeKey,string largeText, 
-            string smallKey, string smallText, string partyId, int size,int max, string match, string join, 
-            string spectate/*, bool instance*/)
+        public static void ClearPresence()
         {
-            presence.details = detail ?? presence.details;
-            presence.state = state ?? presence.state;
-            presence.startTimestamp = (start == -1) ? presence.startTimestamp : start;
-            presence.endTimestamp = (end == -1) ? presence.endTimestamp : end;
-            presence.largeImageKey = largeKey ?? presence.largeImageKey;
-            presence.largeImageText = largeText ?? presence.largeImageText;
-            presence.smallImageKey = smallKey ?? presence.smallImageKey;
-            presence.smallImageText = smallText ?? presence.smallImageText;
-            presence.partyId = partyId ?? presence.partyId;
-            presence.partySize = (size == -1) ? presence.partySize : size;
-            presence.partyMax = (max == -1) ? presence.partyMax : max;
-            presence.matchSecret = match ?? presence.matchSecret;
-            presence.joinSecret = join ?? presence.joinSecret;
-            presence.spectateSecret = spectate ?? presence.spectateSecret;
-            //presence.instance =
-            DiscordRpc.UpdatePresence(presence);
+            instance.presence.details = "";
+            instance.presence.state = "";
+            instance.presence.startTimestamp = 0;
+            instance.presence.endTimestamp = 0;
+            instance.presence.largeImageKey = "";
+            instance.presence.largeImageText = "";
+            instance.presence.smallImageText = "";
+            instance.presence.smallImageKey = "";
+            instance.presence.partyId = "";
+            instance.presence.partySize = 0;
+            instance.presence.partyMax = 0;
+            instance.presence.matchSecret = "";
+            instance.presence.joinSecret = "";
+            instance.presence.spectateSecret = "";
+            //instance.presence.instance =
+        }
+
+        public static void ClearAndUpdate()
+        {
+            ClearPresence();
+            DiscordRpc.UpdatePresence(instance.presence);
         }
         #endregion
     }
