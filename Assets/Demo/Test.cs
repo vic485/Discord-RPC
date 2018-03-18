@@ -7,7 +7,9 @@ namespace Gazzotto
 	{
         public void Click()
         {
-            PresenceManager.UpdatePresence(null, start: DiscordTime.TimeNow());
+            long timeToAdd = DiscordTime.TimeNow();
+            DiscordTime.AddTime(ref timeToAdd, 30);
+            PresenceManager.UpdatePresence(null, end: timeToAdd);
         }
     }
 }

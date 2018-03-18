@@ -12,7 +12,7 @@ namespace DiscordPresence
         {
             TimeSpan time;
             DateTime today = DateTime.UtcNow;
-            time = DateTime.UtcNow - new DateTime(today.Year, today.Month, today.Day, 0, 0, 0, DateTimeKind.Utc);
+            time = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)time.TotalSeconds;
         }
 

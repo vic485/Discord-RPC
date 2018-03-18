@@ -19,7 +19,7 @@ namespace DiscordPresence
         public string applicationId;
         public string optionalSteamId;
         public int callbackCalls;
-        public int clickCounter;
+        //public int clickCounter;
         public DiscordRpc.JoinRequest joinRequest;
         public UnityEvent onConnect;
         public UnityEvent onDisconnect;
@@ -32,7 +32,7 @@ namespace DiscordPresence
 
         public static PresenceManager instance;
 
-        public void OnClick()
+        /*public void OnClick()
         {
             Debug.Log("Discord: on click!");
             clickCounter++;
@@ -40,7 +40,7 @@ namespace DiscordPresence
             presence.details = string.Format("Button clicked {0} times", clickCounter);
 
             DiscordRpc.UpdatePresence(presence);
-        }
+        }*/
 
         public void RequestRespondYes()
         {
@@ -62,6 +62,7 @@ namespace DiscordPresence
             ++callbackCalls;
             Debug.Log("Discord: ready");
             onConnect.Invoke();
+            UpdatePresence(null);
         }
 
         public void DisconnectedCallback(int errorCode, string message)
