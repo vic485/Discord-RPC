@@ -1,5 +1,8 @@
 Discord-RPC
 
+Archiving - Can't get IL2CPP builds to work consitently. Worked fine while following pull requests before Discord published their updates, but now occasionally errors in builds or crashes the discord client.
+---
+
 I will write proper docs when the 2nd Sykoo game jam is over.
 Until then if you need help contact me on Discord (vic485#0001).
 
